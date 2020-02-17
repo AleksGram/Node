@@ -1,0 +1,18 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "cross-env  node app.js --colors=green black --orange red --orange black "
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^3.0.0",
+    "cross-env": "^7.0.0",
+    "dotenv": "^8.2.0",
+    "minimist": "^1.2.0"
+  }
+}
