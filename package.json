@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "cross-env  node app.js --colors=green black --orange red --orange black "
+    "dev": "cross-env  node  app.js  green red yellow blue --deep 2 ",
+    "debug": "cross-env  node --inspect-brk app.js  green  red  yellow blue --deep 1 "
   },
   "author": "",
   "license": "ISC",
@@ -13,6 +14,7 @@
     "chalk": "^3.0.0",
     "cross-env": "^7.0.0",
     "dotenv": "^8.2.0",
+    "filehound": "^1.17.4",
     "minimist": "^1.2.0"
   }
 }
