@@ -31,7 +31,7 @@ exports.logger = function () {
         })
     }
 
-    startLog(deepLevelOfSearch, process.env.FILE_PATH)
+    startLog(deepLevelOfSearch, process.env.FILE_PATH || __dirname)
         .find((err, files) => {
             handleMatchFile(files);
             if (others.length) {

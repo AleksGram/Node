@@ -5,7 +5,7 @@ const createExtensionsMap = (extensions, colors) => {
         return extensions.reduce((acc, ext, index) => {
             return {
                 ...acc,
-                [ext]: colors[index] ? colors[index] : 'grey'
+                [`.${ext}`]: colors[index] ? colors[index] : 'grey'
             }
         }, {});
     } return {};
