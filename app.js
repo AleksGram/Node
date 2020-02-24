@@ -1,3 +1,3 @@
-const { fileReader } = require('./Reader.js');
+const { logger } = require('./logger.js');
 
-fileReader();
+logger();
