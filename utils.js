@@ -12,7 +12,11 @@ const createExtensionsMap = (extensions, colors) => {
 };
 
 global.logFile = function (color, file) {
-    console.log(chalk[color](file));
+    if (chalk[color]) {
+            console.log(chalk[color](file));
+    } else {
+        console.log(chalk['grey'](file));
+    }
 }
 
 

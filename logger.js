@@ -13,16 +13,19 @@ exports.logger = function () {
     const deepLevelOfSearch = argv.deep ? argv.deep : null;
     const extensions = process.env.EXT ? process.env.EXT.split(',') : null;
 
-
-    const filesMap = createExtensionsMap(extensions, colors);
-
     const others = [];
 
     const handleMatchFile = function (files) {
-        files.map(file => {
+        const colorsLenght = colors.length;
+        let currentColor = 0;
+        files.map((file, index) => {
             const fileExt = extname(file);
-            if (filesMap[fileExt]) {
-                logFile(filesMap[fileExt], file)
+
+            if (extensions.indexOf(fileExt.slice(1)) !== -1) {
+                logFile(colors[currentColor], file);
+                if ((currentColor += 1) < colorsLenght) {
+                    currentColor = currentColor;
+                } else currentColor = 0;
             } else {
                 if (others.indexOf(fileExt) === -1) {
                     others.push(fileExt);
