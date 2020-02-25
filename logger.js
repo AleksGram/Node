@@ -3,19 +3,21 @@ const { extname } = require("path");
 require('dotenv').config()
 
 const { createExtensionsMap } = require("./utils.js");
-const { startLog } = require('./parser.js');
+const { startLog, parseFiles } = require('./parser.js');
 
 
 
 exports.logger = function () {
     const argv = require('minimist')(process.argv.slice(2));
     const colors = argv._;
-    const deepLevelOfSearch = argv.deep ? argv.deep : null;
+    const deepLevelOfSearch = argv.deep ? argv.deep : undefined;
     const extensions = process.env.EXT ? process.env.EXT.split(',') : null;
 
     const others = [];
 
-    const handleMatchFile = function (files) {
+    const handleMatchFile = function (error, files) {
+        if (error) throw error;
+
         const colorsLenght = colors.length;
         let currentColor = 0;
         files.map((file, index) => {
@@ -34,14 +36,16 @@ exports.logger = function () {
         })
     }
 
-    startLog(deepLevelOfSearch, process.env.FILE_PATH || __dirname)
-        .find((err, files) => {
-            handleMatchFile(files);
-            if (others.length) {
-                console.log(`**********  Not muched extensions *********`);
-                others.map(ext => console.log(ext));
-            }
-        });
+    // startLog(deepLevelOfSearch, process.env.FILE_PATH || __dirname)
+    //     .find((err, files) => {
+    //         handleMatchFile(files);
+    //         if (others.length) {
+    //             console.log(`**********  Not muched extensions *********`);
+    //             others.map(ext => console.log(ext));
+    //         }
+    //     });
+
+    parseFiles(process.env.FILE_PATH || __dirname, handleMatchFile, deepLevelOfSearch );
 
 }
 

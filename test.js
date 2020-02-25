@@ -1,60 +1,57 @@
 
 const fs = require('fs');
 var path = require('path');
+const {parseFiles} = require('./parser.js');
 
-
-
-/**
- * Explores recursively a directory and returns all the filepaths and folderpaths in the callback.
- * 
- * @see http://stackoverflow.com/a/5827895/4241030
- * @param {String} dir 
- * @param {Function} done 
- */
-function filewalker(dir, done, depth = 0) {
-    let results = [];
-    console.log(depth);
-    fs.readdir(dir, function (err, list) {
-        if (err) return done(err);
-
-        var pending = list.length;
-
-        if (!pending) return done(null, results);
-
-        list.forEach(function (file) {
-
-
-            file = path.resolve(dir, file);
-
-            fs.stat(file, function (err, stat) {
-                var currentDepth = depth;
-                // If directory, execute a recursive call
-                console.log('curent', currentDepth)
-                if (stat && stat.isDirectory() && currentDepth !== null) {
-                    // Add directory to array [comment if you need to remove the directories from the array]
-                        results.push(file);
-
-                        filewalker(file, function (err, res) {
-                            debugger
-                            results = results.concat(res);
-                            if (!--pending) done(null, results);
-                        }, (--currentDepth) >= 0 ? currentDepth : null);
-
-                } else {
-                    results.push(file);
-
-                    if (!--pending) done(null, results);
-                }
-
-            });
-        });
-    });
-};
-filewalker(__dirname, function (err, data) {
-    if (err) {
-        throw err;
-    }
-
-    // ["c://some-existent-path/file.txt","c:/some-existent-path/subfolder"]
+const logger = (err, data) => {
+    if (err) throw err;
     console.log(data);
-}, 1);
+}
+parseFiles(__dirname, logger, 2);
+
+// function parseFile(dir, logger, depth) {
+//     let results = [];
+//     fs.readdir(dir, function (err, list) {
+//         if (err) return logger(err);
+
+//         var pending = list.length;
+
+//         if (!pending ) return logger(null, results);
+
+//         if (depth < 0) return logger(null, results);
+
+//         list.forEach(function (file) {
+//             file = path.resolve(dir, file);
+
+//             fs.stat(file, function (err, stat) {
+
+//                 // If directory, execute a recursive call
+//                 if (stat && stat.isDirectory()) {
+
+//                     let nextDepth = (depth !== undefined) ? depth -1 : undefined;
+
+//                     parseFile(file, function (err, res) {
+//                         results = results.concat(res);
+//                         if (!--pending) logger(null, results);
+//                     }, nextDepth);
+
+
+//                 } else {
+//                     results.push(file);
+//                     if (!--pending) logger(null, results);
+//                 }
+
+//             });
+//         });
+//     });
+// };
+
+
+// parseFile(__dirname, function (err, data) {
+//     if (err) {
+//         throw err;
+//     }
+
+//     // ["c://some-existent-path/file.txt","c:/some-existent-path/subfolder"]
+//     console.log(data);
+// }, 1);
