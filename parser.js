@@ -3,14 +3,6 @@ const fs = require('fs');
 var path = require('path');
 
 
-
-exports.startLog = (depth, path) => {
-    const filesLogger = FileHound.create()
-        .paths(path)
-     return depth ? filesLogger.depth(depth) : filesLogger
-}
-
-
 function parseFile(dir, logger, depth) {
     let results = [];
     fs.readdir(dir, function (err, list) {
@@ -49,4 +41,11 @@ function parseFile(dir, logger, depth) {
 
 exports.parseFiles = (path, logger, depth) => {
     parseFile(path, logger, depth);
+}
+
+// Use filehound library
+exports.startLog = (depth, path) => {
+    const filesLogger = FileHound.create()
+        .paths(path)
+     return depth ? filesLogger.depth(depth) : filesLogger
 }

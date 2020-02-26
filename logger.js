@@ -23,7 +23,7 @@ exports.logger = function () {
         files.map((file, index) => {
             const fileExt = extname(file);
 
-            if (extensions.indexOf(fileExt.slice(1)) !== -1) {
+            if (extensions && extensions.indexOf(fileExt.slice(1)) !== -1) {
                 logFile(colors[currentColor], file);
                 if ((currentColor += 1) < colorsLenght) {
                     currentColor = currentColor;
@@ -34,18 +34,26 @@ exports.logger = function () {
                 }
             }
         })
+        if (others.length) {
+            console.log(`**********  Not muched extensions *********`);
+            others.map(ext => console.log(ext));
+        }
     }
 
-    // startLog(deepLevelOfSearch, process.env.FILE_PATH || __dirname)
-    //     .find((err, files) => {
-    //         handleMatchFile(files);
-    //         if (others.length) {
-    //             console.log(`**********  Not muched extensions *********`);
-    //             others.map(ext => console.log(ext));
-    //         }
-    //     });
 
-    parseFiles(process.env.FILE_PATH || __dirname, handleMatchFile, deepLevelOfSearch );
+    /*  Uncomment for using filehound library
+
+    startLog(deepLevelOfSearch, process.env.FILE_PATH || __dirname)
+        .find((err, files) => {
+            handleMatchFile(files);
+            if (others.length) {
+                console.log(`**********  Not muched extensions *********`);
+                others.map(ext => console.log(ext));
+            }
+        });
+    */
+
+    parseFiles(process.env.FILE_PATH || __dirname, handleMatchFile, deepLevelOfSearch);
 
 }
 
