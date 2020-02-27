@@ -3,7 +3,7 @@ const fs = require('fs');
 var path = require('path');
 
 
-function parseFile(dir, logger, depth) {
+function parseFile(dir, logger, depth, currentDepth) {
     let results = [];
     fs.readdir(dir, function (err, list) {
         if (err) return logger(err);
@@ -12,7 +12,7 @@ function parseFile(dir, logger, depth) {
 
         if (!pending ) return logger(null, results);
 
-        if (depth < 0) return logger(null, results);
+        if (depth && currentDepth > depth) return logger(null, results);
 
         list.forEach(function (file) {
             file = path.resolve(dir, file);
@@ -21,12 +21,12 @@ function parseFile(dir, logger, depth) {
 
                 if (stat && stat.isDirectory()) {
 
-                    let nextDepth = (depth !== undefined) ? depth -1 : undefined;
+                    let current = currentDepth ? currentDepth + 1 : 1
 
                     parseFile(file, function (err, res) {
                         results = results.concat(res);
                         if (!--pending) logger(null, results);
-                    }, nextDepth);
+                    }, depth, current);
 
 
                 } else {

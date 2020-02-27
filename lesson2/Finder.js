@@ -39,7 +39,7 @@ class Finder extends EventEmitter {
     }
 
 
-    parse(dir, logger, depth) {
+    parse(dir, logger, depth, currentDepth) {
         var _this = this;
         let results = [];
         fs.readdir(dir, function (err, list) {
@@ -49,7 +49,7 @@ class Finder extends EventEmitter {
 
             if (!pending) return logger(null, results);
 
-            if (depth < 0) return logger(null, results);
+            if (depth && currentDepth > depth) return logger(null, results);
 
             list.forEach(function (file) {
                 file = path.resolve(dir, file);
@@ -58,12 +58,12 @@ class Finder extends EventEmitter {
 
                     if (stat && stat.isDirectory()) {
 
-                        let nextDepth = (depth !== undefined) ? depth - 1 : undefined;
+                        let current = currentDepth ? currentDepth + 1 : 1
 
                         _this.parse(file, function (err, res) {
                             results = results.concat(res);
                             if (!--pending) logger(null, results);
-                        }, nextDepth);
+                        }, depth, current);
 
 
                     } else {
@@ -84,8 +84,8 @@ class Finder extends EventEmitter {
 }
 
 
-const finder = new Finder(__dirname);
-finder.setDepth(2)
-      .setExtensions(["json"]);
+const finder = new Finder("D:/Stuff/Projects/Test");
+finder.setDepth(0)
+      .setExtensions(["js"]);
       finder.start();
       console.log(__dirname)

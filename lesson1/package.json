@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "cross-env  node  app.js  green red yellow blue ",
+    "dev": "cross-env  node  app.js  green red yellow blue --deep 2 ",
     "debug": "cross-env  node --inspect-brk app.js  green  red  yellow blue --deep 2 "
   },
   "author": "",
