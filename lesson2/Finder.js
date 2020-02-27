@@ -8,19 +8,31 @@ class Finder extends EventEmitter {
     constructor(dirname) {
         super();
         this._dirname = dirname;
+        this.timer = null;
 
-        this.on("init", () => console.log("******** - Started - ********** \n"));
 
-        this.on('files', files => console.log('Received files:', files))
+        this.on("init", () => {
+            console.log("******** - Started - ********** \n");
+        })
 
-        this.on('done', files =>  console.log("******** ##- Finished -## ********** \n"))
+        this.on('files', files => {
+            console.log('Received files:', files)
+        })
 
-        this.on('tick', files =>  console.log("******** ##- Tik -## ********** \n"))
 
+        this.on('done', () => {
+            console.log("******** ##- Finished -## ********** \n")
+
+        })
+
+        this.on('process', () => {
+            console.log("- - - - PROCESSING - - -  \n")
+        })
 
         setTimeout(() => {
-            this.emit("init");
+            this.emit("init", this);
         }, 0);
+
     }
 
     setDepth(depth) {
@@ -42,10 +54,13 @@ class Finder extends EventEmitter {
     parse(dir, logger, depth, currentDepth) {
         var _this = this;
         let results = [];
+
         fs.readdir(dir, function (err, list) {
+
             if (err) return logger(err);
 
             var pending = list.length;
+
 
             if (!pending) return logger(null, results);
 
@@ -75,7 +90,7 @@ class Finder extends EventEmitter {
             });
         });
     };
-    
+
     start() {
         const log = logger(this.extensions, this);
         this.parse(this._dirname, log, this.depth);
@@ -84,8 +99,7 @@ class Finder extends EventEmitter {
 }
 
 
-const finder = new Finder("D:/Stuff/Projects/Test");
-finder.setDepth(0)
-      .setExtensions(["js"]);
-      finder.start();
-      console.log(__dirname)
+const finder = new Finder(__dirname);
+finder.setDepth(1)
+    .setExtensions(["js"]);
+finder.start();
