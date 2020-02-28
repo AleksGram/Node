@@ -5,6 +5,22 @@ const { logger } = require("./logger.js");
 var path = require('path');
 const { extname } = require("path");
 
+const SEARCH_TIMEOUT = 2000;
+
+const argv = require('minimist')(process.argv.slice(2));
+const colors = argv._;
+const colorsLenght = colors.length;
+let currentColor = 0;
+
+const colorLog = (...arguments) => {
+    logFile(colors[currentColor], ...arguments);
+
+    if ((currentColor += 1) < colorsLenght) {
+        currentColor = currentColor;
+    } else currentColor = 0;
+
+}
+
 class Finder extends EventEmitter {
     constructor(dirname) {
         super();
@@ -17,11 +33,11 @@ class Finder extends EventEmitter {
 
         this.on("init", () => {
             console.log("******** - Started - ********** \n");
-            _this.timer = setTimeout(() => _this.emit('process'), 1000);
+            _this.timer = setTimeout(() => _this.emit('process'), SEARCH_TIMEOUT);
         })
 
         this.on('files', (files, entity) => {
-            console.log('Received files:', files)
+            colorLog(files)
             clearTimeout(entity.timer)
         })
 
@@ -33,7 +49,7 @@ class Finder extends EventEmitter {
 
         this.on('process', () => {
             console.log(`- - - - PROCESSING - - - ${_this.files} files processed in ${_this.folders} folders  \n`)
-            _this.timer = setTimeout(() => _this.emit('process'), 1000);
+            _this.timer = setTimeout(() => _this.emit('process'), SEARCH_TIMEOUT);
         })
 
         setTimeout(() => {
@@ -74,7 +90,7 @@ class Finder extends EventEmitter {
 
             if (depth && currentDepth > depth) return logger(null, results);
 
-            list.forEach(function (file, index) {
+            list.forEach(function (file) {
                 _this.files += 1;
                 file = path.resolve(dir, file);
 
@@ -93,7 +109,6 @@ class Finder extends EventEmitter {
 
                     } else {
                         const fileExt = extname(file);
-                        // results.push(file);
 
                         if (_this.extensions && _this.extensions.indexOf(fileExt.slice(1)) !== -1) {
                             if (_this.pattern) {
@@ -103,14 +118,14 @@ class Finder extends EventEmitter {
                                     results.push(file);
 
                                     _this.emit('files', file, _this);
-                                    _this.timer = setTimeout(() => _this.emit('process'), 1000);
+                                    _this.timer = setTimeout(() => _this.emit('process'), SEARCH_TIMEOUT);
 
                                 }
                             } else {
                                 results.push(file);
 
                                 _this.emit('files', file, _this);
-                                _this.timer = setTimeout(() => _this.emit('process'), 1000);
+                                _this.timer = setTimeout(() => _this.emit('process'), SEARCH_TIMEOUT);
 
                             }
                         }
@@ -132,6 +147,6 @@ class Finder extends EventEmitter {
 
 const finder = new Finder('D:/');
 finder.setDepth(0)
-    .setExtensions(["html"])
-    .setPattern('index');
+    .setExtensions(["mp3"])
+    .setPattern('j');
 finder.start();
