@@ -4,6 +4,8 @@ const { readdir } = require('fs');
 const { logger } = require("./logger.js");
 var path = require('path');
 const { extname } = require("path");
+const os = require('os');
+
 
 const SEARCH_TIMEOUT = 2000;
 
@@ -24,7 +26,7 @@ const colorLog = (...arguments) => {
 class Finder extends EventEmitter {
     constructor(dirname) {
         super();
-        this._dirname = dirname;
+        this._dirname = dirname || os.homedir();
         this.timer = null;
         this.files = 0;
         this.folders = 0;
@@ -79,7 +81,7 @@ class Finder extends EventEmitter {
 
         let results = [];
 
-        fs.readdir(dir, function (err, list) {
+        fs.readdir(new URL(`file:${dir}`), function (err, list) {
 
             if (err) return logger(err);
 
@@ -145,7 +147,7 @@ class Finder extends EventEmitter {
 }
 
 
-const finder = new Finder('D:/');
+const finder = new Finder();
 finder.setDepth(0)
     .setExtensions(["mp3"])
     .setPattern('j');
