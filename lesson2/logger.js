@@ -23,23 +23,23 @@ exports.logger = function (extensions, cb) {
         let currentColor = 0;
         files.map((file, index) => {
             const fileExt = extname(file);
-                if (extensions && extensions.indexOf(fileExt.slice(1)) !== -1) {
+                // if (extensions && extensions.indexOf(fileExt.slice(1)) !== -1) {
                     logFile(colors[currentColor], file);
-                    cb.emit("files", file);
+                    // cb.emit("files", file);
                     if ((currentColor += 1) < colorsLenght) {
                         currentColor = currentColor;
                     } else currentColor = 0;
-                } else {
-                    if (others.indexOf(fileExt) === -1) {
-                        others.push(fileExt);
-                    }
-                }
+                // } else {
+                //     if (others.indexOf(fileExt) === -1) {
+                //         others.push(fileExt);
+                //     }
+                // }
         })
         if (others.length) {
             console.log(`**********  Not muched extensions *********`);
             others.map(ext => console.log(ext));
         }
-        cb.emit('done');
+        cb.emit('done', cb);
         clearTimeout(cb.timer);
     }
 }
