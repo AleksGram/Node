@@ -1,6 +1,8 @@
 const { start_path, deep, EXT, search, colors } = require("./parse_params");
 let currentColor = 0;
 
+
+
 debugger
 const colorLog = (...arguments) => {
   const length = colors.length;
@@ -20,7 +22,8 @@ fl.once("started", () => {
 });
 fl.on("file", file => {
   // console.log("Receive file", file);
-  colorLog(file);
+  console.log(FileType.fromFile(file));
+  // colorLog(file);
 });
 fl.on("processing", data => {
   console.log("DATA:", data);

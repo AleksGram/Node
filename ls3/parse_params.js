@@ -11,8 +11,6 @@ if (platform === "win32") {
 const default_colors = JSON.stringify(["red", "green", "blue"]);
 debugger
 
-exports.EXT = env.EXT.split(',');
-// exports.colors = ["red", "green", "blue"]
 exports.colors = ARG._ || default_colors;
 exports.start_path = env.SEARCH_PATH || HOME;
 exports.deep = parseInt(ARG.deep || "0");

@@ -1,6 +1,9 @@
 const { promises } = require("fs");
 const { join, relative, extname } = require("path");
 const chalk = require("chalk");
+const FileType = require('file-type');
+
+const supportedExt = FileType.extensions;
 
 
 global.logFile = function (color, file) {
@@ -21,17 +24,15 @@ const start_parse = (entry_point, max_deep, ext, search, emitter) => {
       if (item.isFile()) {
         emitter("found:file");
         debugger
-        if (
-          ext.includes(extname(item.name).slice(1)) &&
-          (!search || (search && item.name.includes(search)))
-        ) {
+        // if (!search || (search && item.name.includes(search))) {
           const relative_path = relative(
             entry_point,
             join(path_name, item.name)
           );
           files.push(relative_path);
+          console.log(await FileType.fromFile(relative_path));
           emitter("file", relative_path);
-        }
+        // }
       } else if (item.isDirectory()) {
         emitter("found:dir");
         if (deep < max_deep || max_deep === 0) {

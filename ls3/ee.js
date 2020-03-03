@@ -1,14 +1,14 @@
 const EventEmitter = require("events");
 const finder = require("./finder");
 
+
 const INTERVAL = 2000;
 
 class Finder extends EventEmitter {
-  constructor(entry_point, max_deep, ext, search) {
+  constructor(entry_point, max_deep, search) {
     super();
     this._entry_point = entry_point;
     this._max_deep = max_deep;
-    this._ext = ext;
     this._search = search;
     this._process_dir = 0;
     this._process_file = 0;
