@@ -39,7 +39,7 @@ class Finder extends EventEmitter {
     this.emit("finished");
     } catch (err)  {
       console.error(err)
-      this.clearTimer();
+      this.emit("finished");
     }
   }
   found(name) {

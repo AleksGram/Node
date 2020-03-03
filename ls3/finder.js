@@ -22,7 +22,7 @@ const start_parse = (entry_point, max_deep, ext, search, emitter) => {
         emitter("found:file");
         debugger
         if (
-          ext.includes(extname(item.name)) &&
+          ext.includes(extname(item.name).slice(1)) &&
           (!search || (search && item.name.includes(search)))
         ) {
           const relative_path = relative(

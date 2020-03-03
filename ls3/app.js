@@ -1,7 +1,7 @@
 const { start_path, deep, EXT, search, colors } = require("./parse_params");
 let currentColor = 0;
 
-
+debugger
 const colorLog = (...arguments) => {
   const length = colors.length;
   logFile(colors[currentColor], ...arguments);
