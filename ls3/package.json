@@ -1,0 +1,19 @@
+{
+  "name": "ls3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./app.js --colors='[]'  --deep=0 --search=j",
+    "debug": "node --inspect-brk ./app.js --colors='[]' --deep=1 --search=level"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.7.2",
+    "chalk": "^3.0.0",
+    "dotenv": "^8.2.0",
+    "minimist": "^1.2.0"
+  }
+}

@@ -3,7 +3,7 @@ const Finder = require("./Finder.js");
 const os = require('os');
 
 
-const finder = new Finder(__dirname, 99, ['.js']);
+const finder = new Finder("D://", 99, ['.js']);
 
 finder.once("started", () => {
   finder.emit("parse");

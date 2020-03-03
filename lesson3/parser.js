@@ -15,17 +15,19 @@ const parse = (startPath, maxDeep, extensions, searchPattern, emmiter) => {
 				) {
 					const relativePath = relative(startPath, join(path, item.name));
 					results.push(relativePath);
+					console.log(results);
 					emmiter('file', relativePath);
-				} else if (item.isDirectory()) {
-					emmiter('found:file');
-					if (deep < maxDeep || maxDeep !== 0) {
-						const nextPath = join(path, item.name);
-						results.push(...parser(nextPath, deep + 1));
-					}
+				}
+			} else if (item.isDirectory()) {
+				emmiter('found:dir');
+				if (deep < maxDeep || maxDeep !== 0) {
+					const nextPath = join(path, item.name);
+					results.push(...parser(nextPath, deep + 1));
 				}
 			}
-    }
-    return results;
+
+		}
+		return results;
 	};
 };
 

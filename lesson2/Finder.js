@@ -147,7 +147,7 @@ class Finder extends EventEmitter {
 }
 
 
-const finder = new Finder();
+const finder = new Finder("D:/");
 finder.setDepth(0)
     .setExtensions(["mp3"])
     .setPattern('j');

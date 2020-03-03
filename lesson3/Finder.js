@@ -1,6 +1,6 @@
 const EventEmitter = require("events");
 const  parser  = require("./parser.js");
-const PROCESS_INTERVAL = 1000;
+const PROCESS_INTERVAL = 10;
 
 class Finder extends EventEmitter {
   constructor(strartPath, maxDeep, extensions, searchPattern) {
@@ -15,9 +15,9 @@ class Finder extends EventEmitter {
 
     this.once("parse", this.parse);
 
-    this.on("found:file", this.found.bind(this, "file"));
+    this.on("found:file", this.found.bind(this, "Files"));
 
-    this.once("found:dir", this.found.bind(this, "dir"));
+    this.once("found:dir", this.found.bind(this, "Dir"));
 
     this.on("file", this.setTimer)
 
@@ -42,7 +42,7 @@ class Finder extends EventEmitter {
   }
 
   found(name) {
-    this[`_processed:${name}`]++;
+    this[`_processed ${name}`]++;
   }
 
   setTimer () {
