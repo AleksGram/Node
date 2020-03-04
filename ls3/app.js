@@ -1,4 +1,4 @@
-const { start_path, deep, EXT, search, colors } = require("./parse_params");
+const { start_path, deep, ext, search, colors } = require("./parse_params");
 let currentColor = 0;
 
 
@@ -15,14 +15,14 @@ const colorLog = (...arguments) => {
 
 
 const Finder = require("./ee");
-const fl = new Finder(start_path, deep, EXT, search);
+const fl = new Finder(start_path, deep, ext, search);
 fl.once("started", () => {
   console.log("------Parse start------ \n");
   fl.emit("parse");
 });
 fl.on("file", file => {
   // console.log("Receive file", file);
-  console.log(FileType.fromFile(file));
+  // console.log(FileType.fromFile(file));
   // colorLog(file);
 });
 fl.on("processing", data => {

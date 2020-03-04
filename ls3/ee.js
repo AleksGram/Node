@@ -5,11 +5,12 @@ const finder = require("./finder");
 const INTERVAL = 2000;
 
 class Finder extends EventEmitter {
-  constructor(entry_point, max_deep, search) {
+  constructor(entry_point, max_deep, ext, search) {
     super();
     this._entry_point = entry_point;
     this._max_deep = max_deep;
     this._search = search;
+    this._ext = ext;
     this._process_dir = 0;
     this._process_file = 0;
     this.timer;
@@ -29,15 +30,15 @@ class Finder extends EventEmitter {
   async parseDir() {
     this.setTimer();
     try {
-          const result_arr = await finder(
-      this._entry_point,
-      this._max_deep,
-      this._ext,
-      this._search,
-      this.emit.bind(this)
-    )();
-    this.emit("finished");
-    } catch (err)  {
+      const result_arr = await finder(
+        this._entry_point,
+        this._max_deep,
+        this._ext,
+        this._search,
+        this.emit.bind(this)
+      )();
+      this.emit("finished");
+    } catch (err) {
       console.error(err)
       this.emit("finished");
     }

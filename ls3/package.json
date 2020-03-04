@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./app.js yellow red  --deep=0 ",
-    "debug": "node --inspect-brk ./app.js yellow red --deep=0 "
+    "start": "node ./app.js yellow red  --deep=0 --name=*\\.png",
+    "debug": "node --inspect-brk ./app.js yellow red --deep=0 --name=*\\.png"
   },
   "author": "",
   "license": "ISC",
