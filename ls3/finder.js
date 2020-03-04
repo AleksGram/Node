@@ -52,7 +52,7 @@ const start_parse = (entry_point, max_deep, ext, search, emitter) => {
           );
           files.push(relative_path);
           debugger
-          checkExt(`${path_name}\\${item.name}`);
+          // checkExt(`${path_name}\\${item.name}`);
           // try {
           //   console.log(await FileType.fromFile(`${path_name}\\${item.name}`));
           // } catch(err) {

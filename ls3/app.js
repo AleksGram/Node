@@ -1,6 +1,6 @@
-const { start_path, deep, ext, search, colors } = require("./parse_params");
+const { start_path, deep, ext, search, colors, options } = require("./parse_params");
 let currentColor = 0;
-
+console.log(options);
 
 
 debugger
