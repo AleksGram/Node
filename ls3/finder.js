@@ -17,7 +17,6 @@ global.logFile = function (color, file) {
 const checkFileExt = ext => {
   if (supportedExt.has(ext)) {
     return async function (file) {
-      debugger
       const fileExt = await FileType.fromFile(file);
       return fileExt && fileExt.ext === ext;
     }
