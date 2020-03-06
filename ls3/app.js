@@ -20,7 +20,7 @@ fl.once("started", () => {
   fl.emit("parse");
 });
 fl.on("file", file => {
-  console.log("Receive file", file);
+  console.log("Receive file");
   // console.log(FileType.fromFile(file));
   colorLog(file);
 });
