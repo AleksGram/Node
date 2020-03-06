@@ -5,7 +5,7 @@ const finder = require("./finder");
 const INTERVAL = 2000;
 
 class Finder extends EventEmitter {
-  constructor(entry_point, max_deep, ext, search) {
+  constructor(entry_point, max_deep, ext, search, options) {
     super();
     this._entry_point = entry_point;
     this._max_deep = max_deep;
@@ -14,6 +14,7 @@ class Finder extends EventEmitter {
     this._process_dir = 0;
     this._process_file = 0;
     this.timer;
+    this._options = options
 
     this.once("parse", this.parseDir);
     this.on("found:file", () => {
@@ -35,6 +36,7 @@ class Finder extends EventEmitter {
         this._max_deep,
         this._ext,
         this._search,
+        this._options,
         this.emit.bind(this)
       )();
       this.emit("finished");

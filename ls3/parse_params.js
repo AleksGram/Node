@@ -9,10 +9,8 @@ if (platform === "win32") {
 }
 
 const default_colors = JSON.stringify(["red", "green", "blue"]);
-debugger
 
 const setUpSearchParam = (searchArg) => {
-  debugger
   let optional = null;
   let lastArg = searchArg.slice(-1);
   let rest = (lastArg === '*') ? lastArg : null;
@@ -33,5 +31,5 @@ exports.colors = ARG._ || default_colors;
 exports.start_path = env.SEARCH_PATH || HOME;
 exports.deep = parseInt(ARG.deep || "0");
 exports.search = ARG.search || "";
-exports.ext = ARG.name.split('.')[1];
-exports.options = setUpSearchParam(ARG.name.split('\\')[0]);
+exports.ext = ARG.name && ARG.name.split('.')[1];
+exports.options = ARG.name && setUpSearchParam(ARG.name.split('\\')[0]);

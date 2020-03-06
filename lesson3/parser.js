@@ -3,7 +3,6 @@ const { join, relative, extname } = require('path');
 
 const parse = (startPath, maxDeep, extensions, searchPattern, emmiter) => {
 	return function parser(path = startPath, deep = 0) {
-		debugger
 		const results = [];
 		const items = fs.readdirSync(path, { withFileTypes: true });
 		for (const item of items) {
