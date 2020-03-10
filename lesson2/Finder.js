@@ -7,7 +7,7 @@ const { extname } = require("path");
 const os = require('os');
 
 
-const SEARCH_TIMEOUT = 2000;
+const SEARCH_TIMEOUT = 1000;
 
 const argv = require('minimist')(process.argv.slice(2));
 const colors = argv._;
@@ -30,34 +30,11 @@ class Finder extends EventEmitter {
         this.timer = null;
         this.files = 0;
         this.folders = 0;
-        var _this = this;
 
-
-        this.on("init", () => {
-            console.log("******** - Started - ********** \n");
-            _this.timer = setTimeout(() => _this.emit('process'), SEARCH_TIMEOUT);
-        })
-
-        this.on('files', (files, entity) => {
-            colorLog(files)
-            clearTimeout(entity.timer)
-        })
-
-
-        this.on('done', self => {
-            clearTimeout(self.timer);
-            console.log("******** ##- Finished -## ********** \n")
-        })
-
-        this.on('process', () => {
-            console.log(`- - - - PROCESSING - - - ${_this.files} files processed in ${_this.folders} folders  \n`)
-            _this.timer = setTimeout(() => _this.emit('process'), SEARCH_TIMEOUT);
-        })
 
         setTimeout(() => {
             this.emit("init", this);
         }, 0);
-
     }
 
     setDepth(depth) {
@@ -77,7 +54,7 @@ class Finder extends EventEmitter {
 
 
     parse(dir, logger, depth, currentDepth) {
-        var _this = this;
+        let _this = this;
 
         let results = [];
 
@@ -118,17 +95,12 @@ class Finder extends EventEmitter {
                                 let fileName = file.split('.').splice(0, length - 1).join('');
                                 if (fileName.includes(_this.pattern)) {
                                     results.push(file);
-
                                     _this.emit('files', file, _this);
-                                    _this.timer = setTimeout(() => _this.emit('process'), SEARCH_TIMEOUT);
-
                                 }
                             } else {
                                 results.push(file);
 
                                 _this.emit('files', file, _this);
-                                _this.timer = setTimeout(() => _this.emit('process'), SEARCH_TIMEOUT);
-
                             }
                         }
                         if (!--pending) logger(null, results);
@@ -148,7 +120,31 @@ class Finder extends EventEmitter {
 
 
 const finder = new Finder("D:/");
+
 finder.setDepth(0)
     .setExtensions(["mp3"])
     .setPattern('j');
-finder.start();
+
+finder.on("init", (self) => {
+    console.log("******** - Started - ********** \n");
+    self.timer = setTimeout(() => finder.emit('process'), SEARCH_TIMEOUT);
+    self.start();
+})
+
+finder.on('files', (files, entity) => {
+    colorLog(files)
+    clearTimeout(entity.timer)
+    entity.timer = setTimeout(() => entity.emit('process'), SEARCH_TIMEOUT);
+})
+
+
+finder.on('finished', self => {
+    clearTimeout(self.timer)
+    console.log("******** ##- Finished -## ********** \n")
+})
+
+finder.on('process', () => {
+    console.log(`- - - - PROCESSING - - - ${finder.files} files processed in ${finder.folders} folders  \n`)
+    finder.timer = setTimeout(() => finder.emit('process'), SEARCH_TIMEOUT);
+})
+
