@@ -1,9 +1,24 @@
-const { promises, createReadStream, statSync } = require("fs");
+const { promises, createReadStream, statSync, createWriteStream } = require("fs");
 const { join, relative, extname } = require("path");
 const chalk = require("chalk");
 const FileType = require('file-type');
 
 const supportedExt = FileType.extensions;
+
+const getTimeMark = () => {
+  let ts = Date.now();
+
+  let date_ob = new Date(ts);
+  let date = date_ob.getDate();
+  let month = date_ob.getMonth() + 1;
+  let year = date_ob.getFullYear();
+  let hh = date_ob.getUTCHours();
+  let mm = date_ob.getUTCMinutes();
+  let ss = date_ob.getSeconds();
+  let ms = date_ob.getTime();
+
+  return `${year}-${month}-${date}_${hh}_${mm}_${ss}`;
+}
 
 
 global.logFile = function (color, file) {
@@ -15,6 +30,7 @@ global.logFile = function (color, file) {
 }
 
 const checkFileExt = ext => {
+  const ws = createWriteStream(`./${getTimeMark()}.txt`);
   if (supportedExt.has(ext)) {
     return async function (file, search) {
       const rs = createReadStream(file, { start: 0, end: 4100 });
@@ -35,32 +51,32 @@ const checkFileExt = ext => {
   }
 
   return async (file, search) => {
+
     if (extname(file) === `.${ext}`)
 
       if (search) {
+        debugger
         let result = null;
-        const rs = createReadStream(file, {encoding: "utf-8"});
+        const rs = createReadStream(file, { encoding: "utf-8" });
+        // const ws = createWriteStream(`./${getTimeMark()}.txt`);
         for await (let chunk of rs) {
           const searchItemLength = search.length;
           const startIndex = chunk.indexOf(search);
 
           if (startIndex >= 0) {
-            resultStart = ((startIndex - 20) > 0)? startIndex - 20 : 0;
+            ws.write(`\n------File: ${file}\n`)
+            resultStart = ((startIndex - 20) > 0) ? startIndex - 20 : 0;
             resultEnd = startIndex + 20;
             result = chunk.slice(resultStart, resultEnd);
-            console.log('start \n');
+            ws.write(result);
             console.log(result);
-            console.log('\n end ');
-
           }
         }
       }
 
-      return extname(file) === `.${ext}`;
+    return extname(file) === `.${ext}`;
   }
 }
-
-//{ pattern: 'fin', optional: 'd', rest: '*' }
 
 const verifyPattern = (value, pattern, optional) => {
   if (value.startsWith(pattern)) {
@@ -75,8 +91,7 @@ const verifyPattern = (value, pattern, optional) => {
 const start_parse = (entry_point, max_deep, ext, search, searchOptions, emitter) => {
   debugger
   const checkExt = checkFileExt(ext);
-  return async function finder(path_name = entry_point, deep = 0, options=searchOptions) {
-    // const { pattern, optional, rest } = options;
+  return async function finder(path_name = entry_point, deep = 0, options = searchOptions) {
     const files = [];
 
     const items = await promises.readdir(path_name, { withFileTypes: true });
@@ -84,7 +99,6 @@ const start_parse = (entry_point, max_deep, ext, search, searchOptions, emitter)
     for (const item of items) {
       if (item.isFile()) {
         emitter("found:file");
-        // if (!search || (search && item.name.includes(search))) {
         if (options) {
           const { pattern, optional, rest } = options;
 
@@ -101,7 +115,6 @@ const start_parse = (entry_point, max_deep, ext, search, searchOptions, emitter)
             }
           }
         }
-        // }
       } else if (item.isDirectory()) {
         emitter("found:dir");
         if (deep < max_deep || max_deep === 0) {
