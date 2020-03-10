@@ -1,5 +1,5 @@
 const EventEmitter = require("events");
-const  parser  = require("./parser.js");
+const  parser  = require("./parser.js.js");
 const PROCESS_INTERVAL = 10;
 
 class Finder extends EventEmitter {

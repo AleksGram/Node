@@ -55,7 +55,6 @@ const checkFileExt = ext => {
     if (extname(file) === `.${ext}`)
 
       if (search) {
-        debugger
         let result = null;
         const rs = createReadStream(file, { encoding: "utf-8" });
         // const ws = createWriteStream(`./${getTimeMark()}.txt`);
@@ -89,7 +88,6 @@ const verifyPattern = (value, pattern, optional) => {
 
 
 const start_parse = (entry_point, max_deep, ext, search, searchOptions, emitter) => {
-  debugger
   const checkExt = checkFileExt(ext);
   return async function finder(path_name = entry_point, deep = 0, options = searchOptions) {
     const files = [];

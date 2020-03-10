@@ -1,5 +1,5 @@
 
-const Finder = require("./Finder.js");
+const Finder = require("./Finder.js.js");
 const os = require('os');
 
 
