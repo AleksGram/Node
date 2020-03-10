@@ -56,8 +56,7 @@ const checkFileExt = ext => {
 
       if (search) {
         let result = null;
-        const rs = createReadStream(file, { encoding: "utf-8" });
-        // const ws = createWriteStream(`./${getTimeMark()}.txt`);
+        const rs = createReadStream(file, { encoding: "utf-8" })
         for await (let chunk of rs) {
           const searchItemLength = search.length;
           const startIndex = chunk.indexOf(search);
