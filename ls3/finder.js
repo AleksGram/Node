@@ -41,25 +41,23 @@ const checkFileExt = ext => {
       }
 
       const fileType = await FileType.fromBuffer(Buffer.concat(buffer))
-
+    
       if (fileType) {
         return fileType.ext === ext;
       }
-
       return false;
     }
   }
-
   return async (file, search) => {
-
     if (extname(file) === `.${ext}`)
 
       if (search) {
         let result = null;
         const rs = createReadStream(file, { encoding: "utf-8" })
         for await (let chunk of rs) {
-          const searchItemLength = search.length;
           const startIndex = chunk.indexOf(search);
+
+
 
           if (startIndex >= 0) {
             ws.write(`\n------File: ${file}\n`)
@@ -71,18 +69,16 @@ const checkFileExt = ext => {
           }
         }
       }
-
     return extname(file) === `.${ext}`;
   }
 }
 
 const verifyPattern = (value, pattern, optional) => {
-  if (value.startsWith(pattern)) {
-    return true;
-  } else if (optional) {
-    return value.startsWith(pattern + optional);
-  }
-  return false;
+  if (!pattern) return true;
+  const regexStr = `(^${pattern})`;
+  if (optional) regexStr + `${optional}?`;
+  const regex = new RegExp(regexStr);
+  return regex.test(value);
 }
 
 

@@ -31,5 +31,5 @@ exports.colors = ARG._ || default_colors;
 exports.start_path = env.SEARCH_PATH || HOME;
 exports.deep = parseInt(ARG.deep || "0");
 exports.search = ARG.search || "";
-exports.ext = ARG.name && ARG.name.split('.')[1];
+exports.ext = (ARG.name && ARG.name.split('.')[1]) || 'js';
 exports.options = ARG.name && setUpSearchParam(ARG.name.split('\\')[0]);
