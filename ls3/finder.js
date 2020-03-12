@@ -20,6 +20,25 @@ const getTimeMark = () => {
   return `${year}-${month}-${date}_${hh}_${mm}_${ss}`;
 }
 
+const logFile = async (file, search) => {
+  if (search) {
+    let result = null;
+    const rs = createReadStream(file, { encoding: "utf-8" })
+
+    for await (let chunk of rs) {
+      const startIndex = chunk.indexOf(search);
+
+      if (startIndex >= 0) {
+        ws.write(`\n------File: ${file}\n`)
+        resultStart = ((startIndex - 20) > 0) ? startIndex - 20 : 0;
+        resultEnd = startIndex + 20;
+        result = chunk.slice(resultStart, resultEnd);
+        ws.write(result);
+        console.log(result);
+      }
+    }
+  }
+}
 
 global.logFile = function (color, file) {
   if (chalk[color]) {
@@ -42,33 +61,15 @@ const checkFileExt = ext => {
 
       const fileType = await FileType.fromBuffer(Buffer.concat(buffer))
     
-      if (fileType) {
-        return fileType.ext === ext;
+      if (fileType && fileType.ext === ext) {
+        return true
       }
       return false;
     }
   }
   return async (file, search) => {
     if (extname(file) === `.${ext}`)
-
-      if (search) {
-        let result = null;
-        const rs = createReadStream(file, { encoding: "utf-8" })
-        for await (let chunk of rs) {
-          const startIndex = chunk.indexOf(search);
-
-
-
-          if (startIndex >= 0) {
-            ws.write(`\n------File: ${file}\n`)
-            resultStart = ((startIndex - 20) > 0) ? startIndex - 20 : 0;
-            resultEnd = startIndex + 20;
-            result = chunk.slice(resultStart, resultEnd);
-            ws.write(result);
-            console.log(result);
-          }
-        }
-      }
+    logFile(file, search);
     return extname(file) === `.${ext}`;
   }
 }
