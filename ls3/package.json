@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./app.js yellow red  --deep=0  --name=*\\.png",
+    "start": "node ./app.js yellow red  --deep=0  --search=this --name=*\\.js",
     "debug": "node --inspect-brk ./app.js yellow red --deep=0 --search=this --name=*\\.png"
   },
   "author": "",

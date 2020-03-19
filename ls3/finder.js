@@ -24,6 +24,7 @@ const logFile = async (file, search) => {
   if (search) {
     let result = null;
     const rs = createReadStream(file, { encoding: "utf-8" })
+    const ws = createWriteStream(`./${getTimeMark()}.txt`);
 
     for await (let chunk of rs) {
       const startIndex = chunk.indexOf(search);
@@ -49,7 +50,6 @@ global.logFile = function (color, file) {
 }
 
 const checkFileExt = ext => {
-  const ws = createWriteStream(`./${getTimeMark()}.txt`);
   if (supportedExt.has(ext)) {
     return async function (file, search) {
       const rs = createReadStream(file, { start: 0, end: 4100 });
