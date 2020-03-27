@@ -1,50 +1,75 @@
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
-const { parse } = require("querystring");
-const FileType = require('file-type');
 const url = require("url");
-const { checkContentType } = require("./utils");
+const { Request } = require("./ReuestHandler");
+const { checkContentType, Logger } = require("./utils");
+const { PATH_INDEX, supportedFileTypes } = require("./settings");
 
-const PATH_INDEX = "messages.html";
+const requestLogger = fs.createWriteStream("./Logs/RequestLogger.txt");
+const sendFileLogger = fs.createWriteStream("./Logs/SendFileLog.txt");
+const messages = [];
+let counter = 0;
 
-const allowedContentTypes = {
-    "urlencode": "application/x-www-form-urlencoded",
-    ".json": "application/json",
-    ".js": "text/javascript",
-    ".html": "text/html"
-};
-
-
-
-const getContent = async ({ req, res }, par) => {
+const sendFile = async ({ req, res }, par) => {
     par = (par === '/') ? PATH_INDEX : par;
     const filePath = path.join(__dirname, par);
     let contentType = null;
+    const ws = fs.createWriteStream("./Logs/SendFileLog.txt");
+    let startSending = null;
+    let endSending = null;
 
     if (!fs.existsSync(filePath) || fs.lstatSync(filePath).isDirectory()) {
         res.end("<h1>404</h1>");
         return;
     }
-    console.log(filePath)
 
-    contentType = await checkContentType(filePath, allowedContentTypes);
+    contentType = await checkContentType(filePath, supportedFileTypes);
 
     if (contentType) {
-            res.setHeader("Content-Type", contentType);
+        res.setHeader("Content-Type", contentType);
 
-    const rs = fs.createReadStream(filePath);
-    rs.pipe(res);
+        const rs = fs.createReadStream(filePath);
+        res.once("pipe", () => {
+            const date = new Date();
+            startSending = date.getTime();
+
+            Logger.logSendFile(sendFileLogger, req, { date: date.toString() })
+        })
+        res.once("unpipe", () => {
+            const date = new Date();
+            endSending = date.getTime();
+            const options = {
+                date: date.toString(),
+                timeSpent: (endSending - startSending) / 1000,
+            }
+            Logger.logSendFile(sendFileLogger, req, options)
+        })
+        rs.pipe(res);
+
     } else {
         res.end("Not supportable format");
         return;
-    }    
+    }
 }
 
+const handleMessagesRequest = ({ req, res }, par) => {
+    switch (req.method) {
+        case "POST":
+            Request.postMessage(req, res);
+            return;
+        case "GET":
+            Request.getMessages(req, res);
+            return;
+    }
+};
+
+
 const routing = {
-    "/": getContent,
-    "/assets": getContent,
-    "/client.js": getContent,
+    "/": sendFile,
+    "/assets": sendFile,
+    "/client.js": sendFile,
+    "/messages": handleMessagesRequest
 }
 
 const types = {
@@ -59,6 +84,8 @@ const types = {
 const router = client => {
     let route = null;
     const { req, res } = client;
+
+    Logger.logRequest(client, requestLogger);
 
     const parsedUrl = url.parse(req.url, true);
     const parsedUrlLength = parsedUrl.pathname.length;

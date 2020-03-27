@@ -9,8 +9,15 @@
     <header>
         <h1>Messages</h1>
     </header>
+    <form action="/messages" method="POST" id="form">
+        <input type="text" name="text" />
+        <input type="text" name="sender" />
+        <input type="submit" />
+      </form>
+  
     <div id="content">
         Content
+        <ul id="messageList"></ul>
     </div>
 </body>
 <script src="client.js"></script>
