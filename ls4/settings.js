@@ -4,7 +4,8 @@ exports.supportedFileTypes = {
     "urlencode": "application/x-www-form-urlencoded",
     ".json": "application/json",
     ".js": "text/javascript",
-    ".html": "text/html"
+    ".html": "text/html",
+    ".css": "text/css"
 };
 
 exports.allowedContentTypes = [

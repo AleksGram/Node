@@ -5,23 +5,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-</head>
+    <link rel="stylesheet" type="text/css" href="style.css"></head>
 
 <body>
     <header>
         <h1>Messages</h1>
     </header>
     <form action="/messages" method="POST" id="form">
-        <input type="text" name="text" />
-        <input type="text" name="sender" />
-        <input type="submit" />
+        <label for="msg">Message</label>
+        <input id="msg" type="text" name="text" />
+        <label for="sender">Sender</label>
+        <input id="sender" type="text" name="sender" />
     </form>
     <button id="sent">SEnt</button>
 
 
     <div id="content">
         Content
-        <ul id="messageList"></ul>
+        <ul id="messageList">
+            <div id="messageList"></div>
+        </ul>
     </div>
 </body>
 <script src="client.js"></script>

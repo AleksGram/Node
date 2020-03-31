@@ -55,3 +55,13 @@ exports.parseMessage = {
     "application/json": message => JSON.parse(message)
 };
 
+exports.checkQueryParams = (initValue, params, reinit) => {
+    if (reinit) initValue = {};
+    const expectParams = ["sort", "limit", "skip"];
+    expectParams.map(key => {
+        if (params[key] && reinit ) {
+            initValue = Object.assign({}, params);
+        }
+    })
+    return initValue;
+}

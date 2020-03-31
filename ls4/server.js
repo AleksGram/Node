@@ -2,17 +2,19 @@ const http = require("http");
 const fs = require("fs");
 const path = require("path");
 const url = require("url");
+const { parse } = require("querystring");
 const { Request } = require("./ReuestHandler");
-const { checkContentType, Logger } = require("./utils");
+const { checkContentType, Logger, checkQueryParams } = require("./utils");
 const { PATH_INDEX, supportedFileTypes } = require("./settings");
 
 const requestLogger = fs.createWriteStream("./Logs/RequestLogger.txt");
 const sendFileLogger = fs.createWriteStream("./Logs/SendFileLog.txt");
 const messages = [];
 let counter = 0;
+let query = null;
 
-const sendFile = async ({ req, res }, par) => {
-    par = (par === '/') ? PATH_INDEX : par;
+const sendFile = async ({ req, res }, {url}) => {
+    par = (url === '/') ? PATH_INDEX : url;
     const filePath = path.join(__dirname, par);
     let contentType = null;
     const ws = fs.createWriteStream("./Logs/SendFileLog.txt");
@@ -59,7 +61,7 @@ const handleMessagesRequest = ({ req, res }, par) => {
             Request.postMessage(req, res);
             return;
         case "GET":
-            Request.getMessages(req, res);
+            Request.getMessages(req, res, par);
             return;
     }
 };
@@ -69,6 +71,7 @@ const routing = {
     "/": sendFile,
     "/assets": sendFile,
     "/client.js": sendFile,
+    "/style.css": sendFile,
     "/messages": handleMessagesRequest
 }
 
@@ -88,6 +91,10 @@ const router = client => {
     Logger.logRequest(client, requestLogger);
 
     const parsedUrl = url.parse(req.url, true);
+    const queryParams = parsedUrl.query;
+    query = checkQueryParams(query, queryParams, parsedUrl.pathname === "/");
+
+
     const parsedUrlLength = parsedUrl.pathname.length;
     req.url =
         parsedUrlLength > 1 && parsedUrl.pathname[parsedUrlLength - 1] === "/"
@@ -110,7 +117,9 @@ const router = client => {
     }
     const type = typeof route;
     const renderer = types[type];
-    return renderer(route, client, client.req.url);
+    debugger
+    const params = {url: client.req.url, query}
+    return renderer(route, client, params);
 };
 
 

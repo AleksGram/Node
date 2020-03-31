@@ -1,7 +1,9 @@
-const p = document.getElementById("content");
-p.style.color = "red";
+// const p = document.getElementById("content");
+// p.style.color = "red";
 const list = document.getElementById("messageList");
 const form = document.getElementById("form");
+const msg = document.getElementById("msg")
+const sender = document.getElementById("sender")
 const btn = document.getElementById("sent");
 let messages = null;
 function mergeMessages(msgArray) {
@@ -29,6 +31,8 @@ function sentMessage() {
     xhr.onreadystatechange = function () {
         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
             console.log("Finished");
+            msg.value = "";
+            sender.value = "";
             fetch("/messages")
                 .then(data => {
                     return data.json();
@@ -36,8 +40,11 @@ function sentMessage() {
                 .then(addMessage)
         }
     }
-
-    xhr.send(JSON.stringify({ text: "My text", sender: "Me" }))
+    const reqData = {
+        text: msg.value,
+        sender: sender.value
+    }
+    xhr.send(JSON.stringify(reqData));
 };
 
 btn.addEventListener("click", sentMessage);
@@ -45,11 +52,9 @@ btn.addEventListener("click", sentMessage);
 
 function addMessage(data) {
     const nMessages = mergeMessages(data);
-    console.log(data);
-    console.log(messages);
     for(let message of nMessages || messages) {
         const liEl = document.createElement("li");
-        liEl.textContent = `${message.sender}: ${message.text} ID: ${message._id}`;
+        liEl.innerHTML = `<span class="msgId">ID: ${message._id}</span>${message.sender}: ${message.text} `;
         list.appendChild(liEl);
     }
 }
