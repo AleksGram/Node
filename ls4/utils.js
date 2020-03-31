@@ -32,15 +32,16 @@ exports.Logger = {
             status: res.statusCode
         };
         requests.push(currentReq);
-        // if(!logTimer){
-        //     logTimer = setInterval(() => {
-        //         console.log("write")
-        //     ws.write(JSON.stringify(requests));
-        // }, 60000); 
-        //} 
+        if(!logTimer){
+            logTimer = setInterval(() => {
+                console.log("write")
+            ws.write(JSON.stringify(requests));
+        }, 60000); 
+        } 
     },
 
     logSendFile: (ws, req, {date, timeSpent}) => {
+        console.log("send",date)
 
         if (date && timeSpent) ws.write(`Finished sending: ${date}\n
         Time spent: ${timeSpent} sec
@@ -59,9 +60,30 @@ exports.checkQueryParams = (initValue, params, reinit) => {
     if (reinit) initValue = {};
     const expectParams = ["sort", "limit", "skip"];
     expectParams.map(key => {
-        if (params[key] && reinit ) {
+        if (params[key]) {
             initValue = Object.assign({}, params);
         }
     })
     return initValue;
+}
+
+exports.transformData = {
+    sortMessages: messages => {
+        console.log('sort', messages);
+    
+        const result = messages.sort((a, b) => {
+            return (a.text < b.text) ? -1 : 1  
+        })
+        return result;
+    },
+    limitMessage: (messages, limitValue) => {
+        console.log('limit', messages);
+        const result = messages.slice(0, limitValue);
+        return result;
+    },
+    skipMessage: (messages, skipValue) => {
+        console.log('skip', messages);
+        const result = messages.slice(Number(skipValue));
+        return result;
+    }
 }

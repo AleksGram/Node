@@ -2,7 +2,7 @@ const { createWriteStream, createReadStream } = require("fs");
 const url = require("url");
 const path = require("path");
 const { allowedContentTypes } = require("./settings");
-const { parseMessage } = require("./utils");
+const { parseMessage, transformData } = require("./utils");
 
 
 
@@ -37,17 +37,27 @@ exports.Request = {
             messages.push(chunk);
         })
         rs.on("end", () => {
-            if (par.query && par.query.sort) {
+            if (par.query) {
 
                 const storedData = (messages.toString());
-                const result = JSON.parse(storedData);
-                result.sort((a, b) => {
-                    return (a.text < b.text) ? -1 : 1  
+                let result = JSON.parse(storedData);
+
+                Object.keys(parseRequestParams).map(handler => {
+                    const params = par.query[handler];
+                    if (params) {
+                        result = parseRequestParams[handler](result, params);
+                    }
                 })
                 res.end(JSON.stringify(result));
-
             }
             res.end(messages.toString())
         })
     }
 }
+
+const parseRequestParams = {
+    sort: (data) => transformData.sortMessages(data),
+    skip: (data, param) => transformData.skipMessage(data, param),
+    limit: (data, param) => transformData.limitMessage(data, param)
+}
+

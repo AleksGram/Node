@@ -104,20 +104,10 @@ const router = client => {
     let pathParam = req.url.startsWith("/assets") ? "/assets" : req.url;
     route = routing[pathParam];
     if (!route) {
-        //   for (let i = 0; i < matching.length; i++) {
-        //     const rx = matching[i];
-        //     par = client.req.url.match(rx[0]);
-        //     if (par) {
-        //       par.shift();
-        //       route = rx[1];
-        //       break;
-        //     }
-        //   }
         return client.res.end("404");
     }
     const type = typeof route;
     const renderer = types[type];
-    debugger
     const params = {url: client.req.url, query}
     return renderer(route, client, params);
 };
@@ -125,15 +115,4 @@ const router = client => {
 
 http.createServer((req, res) => {
     router({ req, res });
-    // const parsedUrl = url.parse(req.url, true);
-
-    // if (req.url === "/") {
-    //     const rs = fs.createReadStream(path.join(__dirname, "messages.html"));
-    //     rs.pipe(res);
-    // }
-    // if(req.url === "/test.js") {
-    //     const rs = fs.createReadStream(path.join(__dirname, "test.js"));
-    //     rs.pipe(res);
-    // }
-    // res.end(router({req, res}));
 }).listen(2525);
