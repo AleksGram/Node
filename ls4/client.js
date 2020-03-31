@@ -63,6 +63,6 @@ function addMessage(data) {
 
 fetch("/messages")
     .then(data => {
-        return data.json();;
+        return data.json();
     })
     .then(addMessage)

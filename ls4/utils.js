@@ -59,7 +59,7 @@ exports.checkQueryParams = (initValue, params, reinit) => {
     if (reinit) initValue = {};
     const expectParams = ["sort", "limit", "skip"];
     expectParams.map(key => {
-        if (params[key] && reinit ) {
+        if (params[key]) {
             initValue = Object.assign({}, params);
         }
     })
