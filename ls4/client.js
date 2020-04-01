@@ -1,11 +1,10 @@
-// const p = document.getElementById("content");
-// p.style.color = "red";
 const list = document.getElementById("messageList");
 const form = document.getElementById("form");
 const msg = document.getElementById("msg")
 const sender = document.getElementById("sender")
 const btn = document.getElementById("sent");
 let messages = null;
+
 function mergeMessages(msgArray) {
     const newMsg = [];
     if (!messages) {
@@ -58,8 +57,6 @@ function addMessage(data) {
         list.appendChild(liEl);
     }
 }
-
-
 
 fetch("/messages")
     .then(data => {
