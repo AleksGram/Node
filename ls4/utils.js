@@ -32,6 +32,7 @@ exports.Logger = {
             status: res.statusCode
         };
         requests.push(currentReq);
+        console.log(requests)
         if(!logTimer){
             logTimer = setInterval(() => {
                 console.log("write")
