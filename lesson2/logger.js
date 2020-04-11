@@ -23,7 +23,7 @@ exports.logger = function (extensions, cb) {
 
         // })
         
-        cb.emit('done', cb);
+        cb.emit('finished', cb);
         clearTimeout(cb.timer);
     }
 }
