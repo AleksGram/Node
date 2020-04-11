@@ -66,8 +66,8 @@ const parseRequestParams = {
 exports.get_message_by_id = (req, res, next) => {
   const { messages } = res.app.locals;
   const { id } = req.params;
-
-  res.send(messages.find(message => message.id === id));
+  const result = messages.find(message => message.id === id);
+  res.send(result || { code: 404, message: "not found" });
 };
 
 exports.add_new_message = (req, res, next) => {
