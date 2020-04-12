@@ -96,7 +96,7 @@ const router = client => {
     let route = null;
     const { req, res } = client;
 
-    res.on("finish", () =>Logger.logRequest(client, requestLogger))    
+    res.on("close", () =>Logger.logRequest(client, requestLogger))    
 
     const parsedUrl = url.parse(req.url, true);
     const queryParams = parsedUrl.query;
