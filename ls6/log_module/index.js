@@ -2,7 +2,7 @@ const { createReadStream, createWriteStream } = require("fs");
 const { Logger } = require("../utils/logger");
 
 exports.log_module = (req, res, next) => {
-    const logRequest = createWriteStream("./Logs/requestLog.txt", {flags: "w"});
+    const logRequest = createWriteStream("./Logs/requestLog.txt", {flags: "a"});
     const logFileSend = createWriteStream("./Logs/sendFilesLog.txt", {flags: "a"});
 
     const start_time = new Date();
