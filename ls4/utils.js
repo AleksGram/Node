@@ -34,8 +34,11 @@ exports.Logger = {
         requests.push(currentReq);
         if(!logTimer){
             logTimer = setInterval(() => {
-                console.log("write")
-            ws.write(JSON.stringify(requests));
+              if (requests.length) {
+                 console.log("write")
+                  ws.write(JSON.stringify(requests));
+                  requests = [];
+              }
         }, 60000); 
         } 
     },

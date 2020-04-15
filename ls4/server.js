@@ -88,7 +88,7 @@ const router = client => {
     let route = null;
     const { req, res } = client;
 
-    Logger.logRequest(client, requestLogger);
+    res.on("finish", () =>Logger.logRequest(client, requestLogger))    
 
     const parsedUrl = url.parse(req.url, true);
     const queryParams = parsedUrl.query;
@@ -104,6 +104,7 @@ const router = client => {
     let pathParam = req.url.startsWith("/assets") ? "/assets" : req.url;
     route = routing[pathParam];
     if (!route) {
+        res.statusCode = 404;
         return client.res.end("404");
     }
     const type = typeof route;
