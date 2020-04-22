@@ -2,8 +2,20 @@ let reqCounter = 0;
 let requests = [];
 let logTimer = null;
 
+
+const writeFile = (ws, requests) => {
+    console.log("log request")
+    ws.write(`\n----------- logs: ${new Date().toDateString()}\n`);
+    ws.write(JSON.stringify(requests));
+}
+
 exports.Logger = {
-    logRequest: ({ req, res }, ws) => {
+    logRequest: ({ req, res }, ws, isFinished) => {
+        if (isFinished) {
+            writeFile(ws, requests);
+            clearInterval(logTimer);
+            return;
+        }
         const currentReq = {
             id: reqCounter += 1,
             url: req.url,
@@ -14,9 +26,7 @@ exports.Logger = {
         if (!logTimer) {
             logTimer = setInterval(() => {
                 if (requests.length) {
-                    console.log("log request")
-                    ws.write(`\n----------- logs: ${new Date().toDateString()}\n`);
-                    ws.write(JSON.stringify(requests));
+                    writeFile(ws, requests);
                     requests = [];
                 }
             }, 60000);

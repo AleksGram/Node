@@ -1,0 +1,20 @@
+
+.register-page {
+    display: flex;
+    flex-direction: column;
+}
+
+.register-form {
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    align-items: center;
+    margin: 0 auto;
+}
+.register-form input {
+    margin: 5px;
+}
+
+.error {
+    color: red;
+}

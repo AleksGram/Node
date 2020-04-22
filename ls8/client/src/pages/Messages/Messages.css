@@ -1,0 +1,77 @@
+.messages-container {
+    margin: 0 auto;
+    width: 30%;
+    height: 100%;
+}
+.list {
+   list-style: none;
+   height: 100%;
+   margin: 0 auto;
+   overflow-y: scroll;
+   max-height: 400px;
+   background: #f7f75238;
+   font-family: cursive;
+   box-shadow: 1px 5px 15px rgba(0,0,0,0.3);
+}
+
+.item {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.item .buttons span {
+    padding: 0 5px;
+    opacity: 0.5;
+}
+
+.item .buttons span:hover {
+    cursor: pointer;
+    color: #FFC107;
+    opacity: 1;
+}
+
+.item .buttons span.delete:hover {
+    color: red;
+}
+
+.send-container {
+    display: flex;
+    margin-top: 10px;;
+    justify-content: space-between;
+}
+
+.send-container textarea {
+    width: 80%;
+}
+
+.send-container .send {
+    padding: 5px 25px;
+}
+
+.send-container .send:hover {
+    cursor: pointer;
+    background: skyblue;
+}
+
+.list::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+}
+
+.list::-webkit-scrollbar
+{
+	width: 10px;
+	background-color: #F5F5F5;
+}
+
+.list::-webkit-scrollbar-thumb
+{
+	background-color: #f7f75238;
+	border: 2px solid #f7f75238;
+}
+
+.error {
+    color: red;
+}
