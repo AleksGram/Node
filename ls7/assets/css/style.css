@@ -1,0 +1,24 @@
+body {
+  margin-top: 10px;
+}
+
+h1.nunjucks {
+  color: green;
+}
+
+h1.ejs {
+  color: #9ebe4e;
+}
+
+h1.pug {
+  color: chocolate;
+}
+
+#list {
+  padding: 5px;
+  list-style: none;
+}
+#list li {
+  padding: 5px;
+}
+
