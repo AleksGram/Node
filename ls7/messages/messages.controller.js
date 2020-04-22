@@ -5,13 +5,7 @@ const { Filtering } = require("../utils/filterMessages")
 
 exports.get_messages_handler = async (req, res, next) => {
   const params = req.query;
-
-  // to get messages from local server store
-  //const messages = res.app.locals.messages
-
   const dbData = await MessageModel.find({})
-  // res.send( dbData);
-
   res.send( filterData(dbData, params));
 };
 
@@ -19,7 +13,6 @@ const filterData = (data, queryParams) => {
   let result = data;
   Object.keys(parseRequestParams).map(param => {
     if(queryParams[param]) {
-      debugger
       result = parseRequestParams[param](result, queryParams[param]);
     }
   })
@@ -35,14 +28,7 @@ const parseRequestParams = {
 
 
 exports.get_message_by_id = async (req, res, next) => {
-  const messages = await MessageModel.find({})
-
-  // console.log("DB: ", dbData)
-  // const { messages } = res.app.locals;
-  const { id } = req.params;
-
-  // const result = messages.find(message => message.id === id);
-  
+  const { id } = req.params;  
   const dbData = await MessageModel.find({id})
 
   res.send(dbData || { code: 404, message: "not found" });
@@ -61,11 +47,6 @@ let count = 0;
     addedAt: new Date().getTime()
   }
 
-  //add data to server context store
-  // only for demonstarating purpose 
-  messages.push(newMsg);
-
-  //add data to db 
   MessageModel.create(newMsg, (error) => {
     if (error) {
       res.json({ error: true, messages: error.message })
@@ -76,13 +57,11 @@ let count = 0;
 };
 
 exports.update_message_by_id = async (req, res, next) => {
-  const { messages } = res.app.locals;
   const { text } = req.body;
   const { id } = req.params;
 
   console.log(text, id)
 
-  // const message = messages.find(message => message.id === id);
   const filter = {id};
   const update = {text, addedAt: new Date()}
 
@@ -90,10 +69,9 @@ exports.update_message_by_id = async (req, res, next) => {
     returnOriginal: false
   });
 
-  // if (!message) {
-  //   return next({ code: 404, message: "not found" });
-  // }
-  // Object.assign(message, { text, updatedAt: new Date() });
+  if (!doc) {
+    return next({ code: 404, message: "not found" });
+  }
 
   res.json(doc);
 };
@@ -102,15 +80,11 @@ exports.delete_message_by_id = async (req, res, next) => {
   const { messages } = res.app.locals;
   const { id } = req.params;
 
-  // const message_id = messages.findIndex(message => message.id === id);
-  // if (message_id < 0) {
-  //   return next({ code: 404, message: "not found" });
-  // }
-  // const message = messages[message_id];
-  // messages.splice(message_id, 1);
-
   let doc = await MessageModel.findOneAndDelete({id});
-
+  
+  if (!doc) {
+    return next({ code: 404, message: "not found" });
+  }
 
   res.json(doc);
 };

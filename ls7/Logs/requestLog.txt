@@ -165,3 +165,15 @@
 [{"id":1,"url":"/ejs","Client":"Mozilla/5.0","status":400}]
 ----------- logs: Wed Apr 22 2020
 [{"id":1,"url":"/ejs","Client":"Mozilla/5.0","status":400}]
+----------- logs: Wed Apr 22 2020
+[{"id":1,"url":"/nunjucks","Client":"Mozilla/5.0","status":200},{"id":2,"url":"/css/style.css","Client":"Mozilla/5.0","status":200}]
+----------- logs: Wed Apr 22 2020
+[{"id":1,"url":"/nunjucks","Client":"Mozilla/5.0","status":200},{"id":2,"url":"/css/style.css","Client":"Mozilla/5.0","status":304}]
+----------- logs: Wed Apr 22 2020
+[{"id":1,"url":"/nunjucks","Client":"Mozilla/5.0","status":304},{"id":2,"url":"/css/style.css","Client":"Mozilla/5.0","status":304}]
+----------- logs: Wed Apr 22 2020
+[{"id":1,"url":"/nunjucks","Client":"Mozilla/5.0","status":304},{"id":2,"url":"/css/style.css","Client":"Mozilla/5.0","status":304}]
+----------- logs: Wed Apr 22 2020
+[{"id":1,"url":"/nunjucks","Client":"Mozilla/5.0","status":200},{"id":2,"url":"/css/style.css","Client":"Mozilla/5.0","status":304}]
+----------- logs: Wed Apr 22 2020
+[{"id":1,"url":"/nunjucks","Client":"Mozilla/5.0","status":304},{"id":2,"url":"/css/style.css","Client":"Mozilla/5.0","status":304}]

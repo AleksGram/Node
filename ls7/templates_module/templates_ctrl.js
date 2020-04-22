@@ -1,29 +1,23 @@
-const { testData } = require("../testData");
 const MessageModel = require("../models/message.model");
 const { convertTime } = require("../utils/timeConverter");
 
 
-const prepareData = async (res) => {
-    // const messages = res.app.locals.messages.length ? res.app.locals.messages : testData;
-
-    // return messages.map(element => {
-    //     return { ...element, addedAt: convertTime(element.addedAt) }
-    // });
+const prepareData = async () => {
     const dbData = await MessageModel.find({})
-    return dbData.map(element => {
-            return { ...element, addedAt: convertTime(element.addedAt) }
-        });
+    return dbData.map(({ id, text, sender, addedAt }) => {
+        return { id, text, sender, addedAt: convertTime(addedAt) }
+    });
 }
 
-exports.get_nunjucks_tmpl = (req, res, next) => {
-    console.log(prepareData(res))
-    res.render("index.nunjucks", { messages: prepareData() });
+exports.get_nunjucks_tmpl = async (req, res, next) => {
+    const messages = await prepareData();
+    res.render("index.nunjucks", { messages });
 }
 
-exports.get_ejs_tmpl = (req, res, next) => {
-    res.render("index.ejs", { messages: prepareData(res) });
+exports.get_ejs_tmpl = async (req, res, next) => {
+    res.render("index.ejs", { messages: await prepareData() });
 }
 
-exports.get_pug_tmpl = (req, res, next) => {
-    res.render("index.pug", { messages: prepareData(res) });
+exports.get_pug_tmpl = async (req, res, next) => {
+    res.render("index.pug", { messages: await prepareData() });
 }
