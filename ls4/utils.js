@@ -43,12 +43,13 @@ exports.Logger = {
         } 
     },
 
-    logSendFile: (ws, req, {date, timeSpent}) => {
+    logSendFile: (ws, {req, res}, {date, timeSpent}) => {
         console.log("send",date)
 
         if (date && timeSpent) ws.write(`Finished sending: ${date}\n
         Time spent: ${timeSpent} sec
-        Status: ${req.aborted ? 'Failed' : "Success"}`)
+        Status Code: ${res.statusCode}  ${req.aborted ? 'Abborted by client' : ""}
+        `)
 
          if(date) ws.write(`\nStart sending: ${date}\n`)
     }
