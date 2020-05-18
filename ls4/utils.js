@@ -32,11 +32,13 @@ exports.Logger = {
             status: res.statusCode
         };
         requests.push(currentReq);
-        console.log(requests)
         if(!logTimer){
             logTimer = setInterval(() => {
-                console.log("write")
-            ws.write(JSON.stringify(requests));
+              if (requests.length) {
+                 console.log("write")
+                  ws.write(JSON.stringify(requests));
+                  requests = [];
+              }
         }, 60000); 
         } 
     },

@@ -1,0 +1,11 @@
+body {
+  margin-top: 10px;
+}
+
+#list {
+  padding: 5px;
+  list-style: none;
+}
+#list li {
+  padding: 5px;
+}
