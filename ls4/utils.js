@@ -48,7 +48,8 @@ exports.Logger = {
 
         if (date && timeSpent) ws.write(`Finished sending: ${date}\n
         Time spent: ${timeSpent} sec
-        Status: ${req.aborted ? 'Failed' : "Success"}`)
+        Status Code: ${res.statusCode}  ${req.aborted ? 'Abborted by client' : ""}
+        `)
 
         if (date) ws.write(`\nStart sending: ${date}\n`)
     }
