@@ -48,7 +48,6 @@ const filterData = (data, queryParams) => {
   let result = data;
   Object.keys(parseRequestParams).map(param => {
     if(queryParams[param]) {
-      debugger
       result = parseRequestParams[param](result, queryParams[param]);
     }
   })
@@ -75,13 +74,6 @@ exports.add_new_message = (req, res, next) => {
   const { text, sender } = req.body;
 
   messages.push({ text, sender, id: messages.length + 1, addedAt: new Date().getTime() });
-  const ex = {
-    id: Number,
-    text: String,
-    sender: String,
-    addedAt: Date
-  }
-
   res.json(messages[messages.length - 1]);
 };
 

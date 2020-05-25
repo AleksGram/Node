@@ -19,38 +19,38 @@ exports.checkContentType = async (filePath, allowedContentTypes) => {
     }
 
     fileType = await FileType.fromBuffer(Buffer.concat(buffer))
-    return fileType 
-            ? fileType.mime 
-            : allowedContentTypes[path.extname(filePath)]
+    return fileType
+        ? fileType.mime
+        : allowedContentTypes[path.extname(filePath)]
 }
 
 exports.Logger = {
-    logRequest: ({req, res}, ws) => {
+    logRequest: ({ req, res }, ws) => {
         const currentReq = {
-            id: reqCounter +=1,
+            id: reqCounter += 1,
             Client: req.headers['user-agent'].split(' ')[0],
             status: res.statusCode
         };
         requests.push(currentReq);
-        if(!logTimer){
+        if (!logTimer) {
             logTimer = setInterval(() => {
-              if (requests.length) {
-                 console.log("write")
-                  ws.write(JSON.stringify(requests));
-                  requests = [];
-              }
-        }, 60000); 
-        } 
+                if (requests.length) {
+                    console.log("write");
+                    ws.write(JSON.stringify(requests));
+                    requests = [];
+                }
+            }, 60000);
+        }
     },
 
-    logSendFile: (ws, req, {date, timeSpent}) => {
-        console.log("send",date)
+    logSendFile: (ws, req, { date, timeSpent }) => {
+        console.log("send", date)
 
         if (date && timeSpent) ws.write(`Finished sending: ${date}\n
         Time spent: ${timeSpent} sec
         Status: ${req.aborted ? 'Failed' : "Success"}`)
 
-         if(date) ws.write(`\nStart sending: ${date}\n`)
+        if (date) ws.write(`\nStart sending: ${date}\n`)
     }
 }
 
@@ -73,9 +73,9 @@ exports.checkQueryParams = (initValue, params, reinit) => {
 exports.transformData = {
     sortMessages: messages => {
         console.log('sort', messages);
-    
+
         const result = messages.sort((a, b) => {
-            return (a.text < b.text) ? -1 : 1  
+            return (a.text < b.text) ? -1 : 1
         })
         return result;
     },

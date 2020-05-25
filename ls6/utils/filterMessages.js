@@ -13,12 +13,10 @@ exports.Filtering = {
         if (limit <= 0) limit = 1;
         if (limit > 50 ) limit = 50;
 
-        return data.slice(0, (limit <= 0) ? 1 : limit);
+        return data.slice(0, limit);
     },
     skipMessages: (data, param) => {
         let skip = (param === "true") ? 0 : param;
-        if (skip <= 0) limit = 1;
-        if (skip > 500 ) limit = 500;
 
         return data.slice(skip, data.length);
 
