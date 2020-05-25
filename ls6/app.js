@@ -5,7 +5,7 @@ const message_module = require("./messages");
 
 const server = express();
 
-server.all('*', log_module);
+server.use(log_module);
 
 
 server.use(express.static(join(__dirname, "assets")));

@@ -17,11 +17,19 @@ const sendFile = async ({ req, res }, {url}) => {
     par = (url === '/') ? PATH_INDEX : url;
     const filePath = path.join(__dirname, par);
     let contentType = null;
-    const ws = fs.createWriteStream("./Logs/SendFileLog.txt");
     let startSending = null;
     let endSending = null;
 
     if (!fs.existsSync(filePath) || fs.lstatSync(filePath).isDirectory()) {
+        const date = new Date();
+        endSending = date.getTime();
+        const options = {
+            date: date.toString(),
+            timeSpent: (endSending - startSending) / 1000,
+        }
+        res.statusCode = 404;
+        Logger.logSendFile(sendFileLogger, { req, res }, options)
+
         res.end("<h1>404</h1>");
         return;
     }
@@ -36,7 +44,7 @@ const sendFile = async ({ req, res }, {url}) => {
             const date = new Date();
             startSending = date.getTime();
 
-            Logger.logSendFile(sendFileLogger, req, { date: date.toString() })
+            Logger.logSendFile(sendFileLogger, { req, res }, { date: date.toString() })
         })
         res.once("unpipe", () => {
             const date = new Date();
@@ -45,7 +53,7 @@ const sendFile = async ({ req, res }, {url}) => {
                 date: date.toString(),
                 timeSpent: (endSending - startSending) / 1000,
             }
-            Logger.logSendFile(sendFileLogger, req, options)
+            Logger.logSendFile(sendFileLogger, { req, res }, options)
         })
         rs.pipe(res);
 
@@ -88,7 +96,7 @@ const router = client => {
     let route = null;
     const { req, res } = client;
 
-    res.on("finish", () =>Logger.logRequest(client, requestLogger))    
+    res.on("close", () =>Logger.logRequest(client, requestLogger))    
 
     const parsedUrl = url.parse(req.url, true);
     const queryParams = parsedUrl.query;
