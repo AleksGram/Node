@@ -14,8 +14,9 @@ exports.authUser = async (req, res, next) => {
     }
 
     req.session.user = user;
+    const {_id, role, nik } = user;
 
-    res.json({ _id: user._id, role: user.role, nik: user.nik, error: null });
+    res.json({ _id, role, nik, error: null });
   } catch (e) {
     next(e);
   }

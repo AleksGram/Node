@@ -41,8 +41,10 @@ export const api = {
     },
 
     deleteMessage: (id) => {
-        debugger
         return send(`messages/messages/${id}`, deleteMethod )
-    }
+    },
 
+    getAllAccounts: () => {
+        return send("/accounts/all", get)
+    },
 }

@@ -22,16 +22,16 @@ export const Messages = () => {
   useEffect(() => {
 
     api.getMessages()
-      .then((messages) => {
-        if (messages.error) {
-          setError(messages.error)
+      .then((data) => {
+        if (data.error) {
+          setError(data.error)
           setTimeout(() => history.push("/"), 1000)
           return;
         }
-        setMessages(messages);
+        setMessages(data);
         scrollToBottom();
       })
-  }, [messages.length])
+  }, [messages.length, history])
 
 
   const onChangeHandler = ({ target: { value } }) => {
@@ -74,8 +74,11 @@ export const Messages = () => {
       })
   }
 
+  const onClickAllAccounts = () => history.push("/accounts")
+
   return (
     <div className="messages-container">
+      {location.state?.role === "admin" && (<a onClick={onClickAllAccounts}>Show all accounts</a>)}
       <h1>{`Hi ${location.state?.userName}`}</h1>
       <div className="message-date">
         <ul className="list" ref={listRef}>

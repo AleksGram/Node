@@ -10,6 +10,8 @@ import Registration from "./pages/Registration/index";
 import Welcome from "./pages/Welcome/index";
 import Login from "./pages/Login/index";
 import Messages from "./pages/Messages/index";
+import Accounts from "./pages/Accounts/index";
+
 
 
 const history = createBrowserHistory();
@@ -19,6 +21,9 @@ ReactDOM.render(
     <Router history={history}>
       <App >
         <Switch>
+          <Route path="/accounts">
+            <Accounts/>
+          </Route>
           <Route path="/registration">
             <Registration />
           </Route>

@@ -19,7 +19,7 @@ export const Login = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     api.login({ email, password: pass })
-      .then(({error, nik}) => {
+      .then(({error, nik, role}) => {
         if (error) {
           let msg;
           if (typeof (error) === "string") {
@@ -28,8 +28,7 @@ export const Login = () => {
           setError(msg);
           return
         }
-        debugger
-        history.push({pathname: "/messages", state: {userName: nik}})
+        history.push({pathname: "/messages", state: {userName: nik, role}})
       })
   }
 

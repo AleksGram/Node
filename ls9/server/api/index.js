@@ -8,6 +8,8 @@ router.use("/users", require("./users/index"));
 
 router.use("/messages", require("./messages/index"));
 
+router.use("/accounts", require("./accounts/index"));
+
 router.use((err, req, res, next) => {
   let e = { error: "" };
   if (err.joi) {

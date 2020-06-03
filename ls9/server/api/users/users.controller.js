@@ -2,7 +2,7 @@ const UsersModel = require("../models/users.model");
 
 exports.registerUser = async (req, res, next) => {
   try {
-    const { email, password, nik, role } = req.body;
+    const { email, password, nik } = req.body;
     debugger
     const user = new UsersModel({ email, password, nik});
     await user.save();

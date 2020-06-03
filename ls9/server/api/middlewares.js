@@ -13,7 +13,6 @@ exports.validate = (schema) => {
 };
 
 const isAuthorized = (req, res, next) => {
-  debugger
   if (req.isAuthenticated()) {
     return next();
   }
@@ -23,10 +22,9 @@ exports.isAuthorized = isAuthorized;
 
 exports.isAdmin = (req, res, next) => {
   isAuthorized(req, res, (err) => {
-    debugger
     if (!err && req.user.role === "admin") {
       return next();
     }
-    next(err || { status: 403, message: "not has permission" });
+    next(err || { status: 403, error: "not has permission" });
   });
 };
