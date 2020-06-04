@@ -2,7 +2,18 @@
     margin: 0 auto;
     width: 30%;
     height: 100%;
+    padding: 5px;
 }
+
+.messages-container a {
+    color: rgb(35, 139, 180);
+    
+}
+
+.messages-container a:hover {
+    cursor: pointer;
+}
+
 .list {
    list-style: none;
    height: 100%;

@@ -28,7 +28,7 @@ export const Login = () => {
           setError(msg);
           return
         }
-        history.push({pathname: "/messages", state: {userName: nik, role}})
+        history.push({pathname: "/messages"})
       })
   }
 

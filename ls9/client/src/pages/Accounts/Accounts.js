@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../../data-provider";
+import { RoleInput } from "./RoleInput";
 
 export const Accounts = () => {
 
@@ -24,17 +25,18 @@ export const Accounts = () => {
                 <div className="user-info">
                     <p>{`Nik name : ${nik}`}</p>
                     <p>{`Email : ${email}`}</p>
-                    <p>
-                        <b>Role :</b> <span className="user-role">{role}</span>
-                    </p>
+                    <div className="user-role">
+                        <RoleInput role={role} email={email}/>
+                    </div>
                 </div>
-                <button>Change role</button>
+                <button>Block account</button>
             </li>
         )
     }
 
     return (
         <div className="accounts">
+            <a href={"/messages"}>Back to messages</a>
             <h1>Registred accounts</h1>
             {error && <div className="error">{error}</div>}
             {

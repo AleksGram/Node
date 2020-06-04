@@ -1,6 +1,7 @@
 const get = "GET";
 const post = "POST";
 const deleteMethod = "DELETE";
+const put = "PUT";
 
 const send = (path, method, params) => {
     return fetch(`http://localhost:2525/api/${path}`, {
@@ -46,5 +47,9 @@ export const api = {
 
     getAllAccounts: () => {
         return send("/accounts/all", get)
+    },
+
+    updateUserRole: ({ email, role }) => {
+        return send("accounts/update", put, { email, role })
     },
 }

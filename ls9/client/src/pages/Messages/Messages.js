@@ -10,6 +10,7 @@ export const Messages = () => {
   const location = useLocation();
   const [messages, setMessages] = useState([]);
   const [userMessage, setUserMesssage] = useState("")
+  const [user, setUser] = useState("");
   const [error, setError] = useState("");
 
   const listRef = useRef(null);
@@ -28,7 +29,8 @@ export const Messages = () => {
           setTimeout(() => history.push("/"), 1000)
           return;
         }
-        setMessages(data);
+        setMessages(data.messages);
+        setUser(data.user);
         scrollToBottom();
       })
   }, [messages.length, history])
@@ -43,7 +45,6 @@ export const Messages = () => {
     setError("");
     api.addMessage({ text: userMessage, autor: location.state?.userName })
       .then(data => {
-        debugger
         if (data.error) {
           setError(data.error);
           setTimeout(() => {
@@ -54,6 +55,7 @@ export const Messages = () => {
         messages.push({ text: userMessage, autor: location.state?.userName })
         setMessages([...messages])
         scrollToBottom();
+        setUserMesssage("");
       })
       .catch(error => {
         setError("Something went wrong")
@@ -78,8 +80,8 @@ export const Messages = () => {
 
   return (
     <div className="messages-container">
-      {location.state?.role === "admin" && (<a onClick={onClickAllAccounts}>Show all accounts</a>)}
-      <h1>{`Hi ${location.state?.userName}`}</h1>
+      {user.role === "admin" && (<a onClick={onClickAllAccounts}>Show all accounts</a>)}
+      <h1>{`Hi ${user.nik}`}</h1>
       <div className="message-date">
         <ul className="list" ref={listRef}>
           {messages.map(({ text, autor, id }, i) => (

@@ -7,8 +7,9 @@ const hasAdminPermissions = user => user.role === "admin";
 
 exports.get_messages_handler = async (req, res, next) => {
   const params = req.query;
+  const { user } = req.session;
   const dbData = await MessageModel.find({ deletedAt: undefined })
-  res.send(filterData(dbData, params));
+  res.send({messages: filterData(dbData, params), user});
 };
 
 const filterData = (data, queryParams) => {
