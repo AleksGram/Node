@@ -16,6 +16,7 @@ const userSchema = new Schema(
     role: { type: String, default: "user", enum: ["user", "admin"] },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date },
+    isBlocked: {type: Boolean}
   },
   {
     collection: "users",

@@ -7,3 +7,4 @@ exports.authUserValidation = {
     password: joi.string().min(6).max(100).required(),
   },
 };
+

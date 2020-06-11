@@ -3,7 +3,7 @@ const passport = require("passport");
 const { Router } = require("express");
 const router = Router();
 
-const { validate, isAdmin } = require("../middlewares");
+const { validate, isAdmin, isBlocked } = require("../middlewares");
 
 const { authUser } = require("./auth.controller");
 const { authUserValidation } = require("./auth.validations");

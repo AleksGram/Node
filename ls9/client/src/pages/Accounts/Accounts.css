@@ -3,6 +3,12 @@
     display: flex; 
     flex-direction: column;
     align-items: center;    
+    position: relative;
+}
+
+.error {
+    /* position: absolute;
+    top: 0; */
 }
 .accounts-list {
     list-style: none;
@@ -72,4 +78,8 @@ button {
     height: 35px;
     margin-top: 25px;
     background: #ffc107;
+}
+
+button.isBlocked {
+    background: red;
 }

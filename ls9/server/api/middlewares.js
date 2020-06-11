@@ -22,7 +22,7 @@ exports.isAuthorized = isAuthorized;
 
 exports.isAdmin = (req, res, next) => {
   isAuthorized(req, res, (err) => {
-    if (!err && req.user.role === "admin") {
+    if (!err && req.user.role === "admin" ) {
       return next();
     }
     next(err || { status: 403, error: "not has permission" });

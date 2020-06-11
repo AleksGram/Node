@@ -52,4 +52,8 @@ export const api = {
     updateUserRole: ({ email, role }) => {
         return send("accounts/update", put, { email, role })
     },
+
+    blockAccount: ({ email, role, isBlocked }) => {
+        return send("accounts/block-account", put, { email, role, isBlocked })
+    }
 }
