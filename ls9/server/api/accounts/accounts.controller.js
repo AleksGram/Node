@@ -9,10 +9,15 @@ exports.getAllAccounts = async (req, res, next) => {
 exports.changeUserRole = async (req, res, next) => {
     const { email, role } = req.body;
 
+    const { user } = req.session;
+
+    if (role === "user" && !user.rootAdmin) {
+        return next({code: 403, error: "You have no root permissions!" })
+    }
+
     const doc = await UserModel.findOneAndUpdate({email}, {role}, {
         returnOriginal: false
     });
-    debugger
 
     if(!doc) return next({code: 404, error: "User not found" });
 
@@ -28,7 +33,6 @@ exports.blockAccount = async (req, res, next) => {
         lean: true,
         returnOriginal: false
     })
-    debugger
 
     if(!doc) return next({code: 404, error: "User not found" });
 

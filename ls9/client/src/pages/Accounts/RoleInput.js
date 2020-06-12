@@ -37,7 +37,7 @@ export const RoleInput = ({ role, email }) => {
 
     return (
         <>
-            <b>Role :</b> <input readOnly value={userRole} onClick={() => showOptions(!options)} className={userRole}/>
+            <b>Role :</b> <label><input readOnly value={userRole} onClick={() => showOptions(!options)} className={userRole}/> Click to change role</label>
             {options && (<ul className="role-options">
                 <li onClick={changeUserRole({email, role: "user"})}>User</li>
                 <li onClick={changeUserRole({email, role: "admin"})}>Admin</li>

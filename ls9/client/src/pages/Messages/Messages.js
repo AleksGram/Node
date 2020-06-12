@@ -43,7 +43,7 @@ export const Messages = () => {
 
   const sendMessage = () => {
     setError("");
-    api.addMessage({ text: userMessage, autor: location.state?.userName })
+    api.addMessage({ text: userMessage, autor: user.nik })
       .then(data => {
         if (data.error) {
           setError(data.error);
@@ -52,7 +52,7 @@ export const Messages = () => {
           }, 1000)
           return
         }
-        messages.push({ text: userMessage, autor: location.state?.userName })
+        messages.push({ text: userMessage, autor: user.nik })
         setMessages([...messages])
         scrollToBottom();
         setUserMesssage("");
@@ -67,7 +67,6 @@ export const Messages = () => {
     setError("");
     api.deleteMessage(id)
       .then(data => {
-        debugger
         if (data.error) {
           setError(data.error)
           return
@@ -78,8 +77,16 @@ export const Messages = () => {
 
   const onClickAllAccounts = () => history.push("/accounts")
 
+  const onLogout = () => 
+        api.logout()
+        .then(data => {
+          if(data.error) return setError(data.error);
+          history.push("/login");
+        })
+
   return (
     <div className="messages-container">
+      <button onClick={onLogout}>LogOut</button>
       {user.role === "admin" && (<a onClick={onClickAllAccounts}>Show all accounts</a>)}
       <h1>{`Hi ${user.nik}`}</h1>
       <div className="message-date">

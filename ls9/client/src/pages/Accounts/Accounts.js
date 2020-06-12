@@ -24,7 +24,6 @@ export const Accounts = () => {
         setBlockAccError(null);
         api.blockAccount({ email, role, isBlocked })
             .then(data => {
-                debugger
                 if (data.error) {
                     setBlockAccError(data.error);
                     return;

@@ -14,7 +14,9 @@ exports.authUser = async (req, res, next) => {
     }
 
     req.session.user = user;
-    const {_id, role, nik } = user;
+    const {_id, role, nik, isBlocked } = user;
+    
+    if(isBlocked) throw { status: 403, error: "Account is blocked" }
 
     res.json({ _id, role, nik, error: null });
   } catch (e) {

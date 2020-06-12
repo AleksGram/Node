@@ -55,5 +55,9 @@ export const api = {
 
     blockAccount: ({ email, role, isBlocked }) => {
         return send("accounts/block-account", put, { email, role, isBlocked })
-    }
+    },
+
+    logout: () => {
+        return send("/logout", get)
+    },
 }

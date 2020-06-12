@@ -22,4 +22,13 @@ router.use((err, req, res, next) => {
   res.status(e.status || 400).send(e);
 });
 
+router.get("/logout", (req, res) => {
+  req.logOut();
+  req.session.destroy();
+  res.clearCookie("connect.sid");
+  debugger
+  res.send({code: 200, message: "Session destroyed"});
+});
+
+
 module.exports = router;

@@ -116,12 +116,5 @@ exports.delete_message_by_id = async (req, res, next) => {
   if (!doc) {
     return next({ code: 404, message: "not found" });
   }
-
-
-  // let doc = await MessageModel.findOneAndDelete({id});
-  // if (!doc) {
-  //   return next({ code: 404, error: "Not found" });
-  // }
-
   res.json(doc);
 };
