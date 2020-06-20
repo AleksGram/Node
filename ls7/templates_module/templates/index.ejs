@@ -1,0 +1,22 @@
+<html>
+
+<head>
+    <title>Lesson 6</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+</head>
+
+<body>
+    <h1 class="ejs">Powered by EJS</h1>
+    <ul id='list'>
+        <%  for (let msg of messages){ %>
+            <li>
+                <%= msg.addedAt %></br>
+                <span><%= msg.sender %></span><br/>
+                <b><%= msg.text %></b>
+            </li>
+        <% } %>
+    </ul>
+</body>
+
+</html>
